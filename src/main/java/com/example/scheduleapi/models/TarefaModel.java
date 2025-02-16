@@ -1,23 +1,25 @@
 package com.example.scheduleapi.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.hateoas.RepresentationModel;
 
-import jakarta.persistence.CollectionTable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
@@ -32,22 +34,18 @@ public class TarefaModel extends RepresentationModel<TarefaModel >implements Ser
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(length = 20, nullable = false)
-	private String username;
-	
-	@Column(length = 100, nullable = false)
-	private String password;
-	
-	@Column(name = "dt_inclusao", nullable = false)
+	@Column(name = "dt_inclusao", nullable = false, updatable = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
 	private Date dataInclusao;
 	
 	@Column(name = "dt_final", nullable = false)
 	private Date dataFinal;
 	
-	@ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "tab_user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role_id")
-    private List<String> roles = new ArrayList<>();
+	@ManyToOne()
+	@JoinColumn(name = "usuario_id", nullable = false, referencedColumnName = "id")
+	@JsonBackReference
+	private UserModel usuario;
 	
 	@NotNull
 	@Pattern(regexp = "^(https?|ftp)://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$", 
@@ -84,23 +82,11 @@ public class TarefaModel extends RepresentationModel<TarefaModel >implements Ser
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	public String getUsername() {
-		return username;
+	public UserModel getUsuario() {
+		return usuario;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsuario(UserModel usuario) {
+		this.usuario = usuario;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public List<String> getRoles() {
-		return roles;
-	}
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
-	}
-	
+
 }

@@ -23,7 +23,6 @@
 //        .csrf(csrf -> csrf.disable())
 //        .authorizeHttpRequests(auth -> auth
 //            .requestMatchers("/").permitAll()
-//            .requestMatchers(HttpMethod.POST, "/login").permitAll()
 //            .requestMatchers("/tarefa").hasAnyRole("USERS", "MANAGERS")
 //            .anyRequest().authenticated()
 //        )

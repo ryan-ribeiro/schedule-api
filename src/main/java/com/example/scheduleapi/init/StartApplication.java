@@ -1,53 +1,54 @@
 package com.example.scheduleapi.init;
 
+import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.example.scheduleapi.models.TarefaModel;
-import com.example.scheduleapi.repositories.TarefaRepository;
+import com.example.scheduleapi.models.UserModel;
+import com.example.scheduleapi.repositories.UserRepository;
 
 @Component
 public class StartApplication implements CommandLineRunner {
 	@Autowired
-	private TarefaRepository tarefaRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
-	public StartApplication(TarefaRepository tarefaRepository, PasswordEncoder passwordEncoder) {
-        this.tarefaRepository = tarefaRepository;
+	public StartApplication(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 	
 	@Override
 	public void run(String... args) throws Exception {
-		TarefaModel tarefa = tarefaRepository.findByUsername("admin");
-		if(tarefa == null) {
-			tarefa = new TarefaModel();
-			tarefa.setNome("ADMIN");
-			tarefa.setUsername("admin");
-			tarefa.setPassword(passwordEncoder.encode("admin123"));
-			tarefa.getRoles().add("MANAGERS");
-			if (tarefa.getUri() == null) {
-			    tarefa.setUri("algum_valor_padrao");
+		UserModel user = userRepository.findByUsername("admin");
+		if(user == null) {
+			user = new UserModel();
+			user.setName("ADMIN");
+			user.setUsername("admin");
+			user.setPassword(passwordEncoder.encode("admin123"));
+			if (user.getRoles() == null) {
+			    user.setRoles(new HashSet<>());
 			}
-			tarefaRepository.save(tarefa);
+			user.getRoles().add("MANAGERS");
+			userRepository.save(user);
 		}
 		
-		tarefa = tarefaRepository.findByUsername("user");
-		if(tarefa == null) {
-			tarefa = new TarefaModel();
-			tarefa.setNome("USER");
-			tarefa.setUsername("user");
-			tarefa.setPassword(passwordEncoder.encode("user123"));
-			tarefa.getRoles().add("USERS");
-			if (tarefa.getUri() == null) {
-			    tarefa.setUri("algum_valor_padrao");
+		user = userRepository.findByUsername("user");
+		if(user == null) {
+			user = new UserModel();
+			user.setName("USER");
+			user.setUsername("user");
+			user.setPassword(passwordEncoder.encode("user123"));
+			if (user.getRoles() == null) {
+			    user.setRoles(new HashSet<>());
 			}
-			tarefaRepository.save(tarefa);
+			user.getRoles().add("USERS");
+			userRepository.save(user);
 		}
 	}
 }

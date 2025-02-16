@@ -11,17 +11,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.scheduleapi.models.TarefaModel;
-import com.example.scheduleapi.repositories.TarefaRepository;
+import com.example.scheduleapi.models.UserModel;
+import com.example.scheduleapi.repositories.UserRepository;
 
 @Service
 public class SecurityDatabaseService implements UserDetailsService{
 	@Autowired
-	private TarefaRepository tarefaRepository;
+	private UserRepository userRepository;
 	
 	@Override
     public UserDetails loadUserByUsername(String username) {
-        TarefaModel userEntity = tarefaRepository.findByUsername(username);
+        UserModel userEntity = userRepository.findByUsername(username);
         if (userEntity == null) {
             throw new UsernameNotFoundException("Usuário não encontrado: " + username);
         }
