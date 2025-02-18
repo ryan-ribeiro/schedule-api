@@ -13,4 +13,6 @@ import com.example.scheduleapi.models.UserModel;
 public interface UserRepository extends JpaRepository<UserModel, UUID>{
 	@Query("SELECT t FROM UserModel t JOIN FETCH t.roles WHERE t.username =:username")
     public UserModel findByUsername(@Param("username") String username);
+	
+	public boolean existsByUsername(String username);
 }

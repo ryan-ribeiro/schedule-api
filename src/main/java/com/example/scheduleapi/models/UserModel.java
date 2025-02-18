@@ -30,13 +30,13 @@ public class UserModel extends RepresentationModel<UserModel> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
-	@Column(unique = true, nullable = false)
+	@Column(unique = false, nullable = false)
 	private String name;
 	
 	@Column(unique = true, nullable = false)
 	private String username;
 	
-	@Column(nullable = false)
+	@Column(unique = false, nullable = false)
 	private String password;
 	
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

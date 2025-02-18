@@ -3,11 +3,8 @@ package com.example.scheduleapi.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +34,7 @@ import com.example.scheduleapi.models.UserModel;
 import com.example.scheduleapi.repositories.TarefaRepository;
 import com.example.scheduleapi.repositories.UserRepository;
 import com.example.scheduleapi.services.NullPropertyNamesServices;
+import com.example.scheduleapi.services.UserService;
 
 import jakarta.validation.Valid;
 
@@ -51,7 +52,11 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	UserService userService;
+	
 	@GetMapping("/user")
+	@PreAuthorize("hasRole('MANAGERS')")
 	public ResponseEntity<Object> getAllUsers(@PageableDefault(page= 0, size= 10, sort= "dataInclusao", 
 			direction= Sort.Direction.ASC) Pageable pageable) {
 		try {
@@ -71,8 +76,15 @@ public class UserController {
 	}
 	
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasRole('USERS')")
 	public ResponseEntity<Object> getOneUser(@PathVariable(value="id")UUID id, @PageableDefault(page= 0, size= 10, sort= "dataInclusao",
 																			direction= Sort.Direction.ASC) Pageable pageable) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		if(!username.equals(userRepository.findById(id).get().getUsername())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 		Optional<UserModel> user = userRepository.findById(id);
 		if(user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Uesr not found");
@@ -82,17 +94,38 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public ResponseEntity<UserModel> postUser (@RequestBody @Valid UserRecordDto userRecordDto) {
+	@PreAuthorize("hasRole('USERS')")
+	public ResponseEntity<UserModel> postUser (@RequestBody @Valid UserRecordDto userRecordDto) throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String usernameAuth = authentication.getName();
+		if(!usernameAuth.equals(userRecordDto.username())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 		UserModel user = new UserModel();
 		BeanUtils.copyProperties(userRecordDto, user);
 		user.setPassword(passwordEncoder.encode(userRecordDto.password()));
 		
+		userService.createUser(user);
+		
+		try {
 		return ResponseEntity.ok(userRepository.save(user));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
 	}
 	
 	@PatchMapping("/user/{id}")
+	@PreAuthorize("hasRole('USERS')")
 	public ResponseEntity<Object> patchUser(@PathVariable(value="id") UUID id,
 											   @RequestBody @Valid UserPatchRecordDto userPatchRecordDto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String usernameAuth = authentication.getName();
+		
+		if(!usernameAuth.equals(userRepository.findById(id).get().getUsername())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 		Optional<UserModel> userOptional = userRepository.findById(id);
 		if(userOptional.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -107,10 +140,17 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userModel);
 	}
 	
-	// ########## Put não está funcionando
 	@PutMapping("/user/{id}")
+	@PreAuthorize("hasRole('USERS')")
 	public ResponseEntity<Object> putUser(@PathVariable(value = "id") UUID id,
 	                                      @RequestBody @Valid UserRecordDto userRecordDto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String usernameAuth = authentication.getName();
+		
+		if(!usernameAuth.equals(userRepository.findById(id).get().getUsername())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 	    Optional<UserModel> userOptional = userRepository.findById(id);
 	    if (userOptional.isEmpty()) {
 	        return ResponseEntity.notFound().build();
@@ -145,7 +185,15 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/user/{id}")
+	@PreAuthorize("hasRole('USERS')")
 	public ResponseEntity<Object> putTarefa(@PathVariable(value="id") UUID id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String usernameAuth = authentication.getName();
+		
+		if(!usernameAuth.equals(userRepository.findById(id).get().getUsername())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		
 		Optional<UserModel> user = userRepository.findById(id);
 		if(user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
