@@ -2,7 +2,7 @@
 
 &#x20;  &#x20;
 
-This project is an API built using **Java, Spring Boot, Spring Security, Swagger, HATEOAS, PostgreSQL**, and implements **Bearer Authentication** and **ISO 8601** date formats. The project supports **HTTP PATCH**, includes **pagination**, and follows all four levels of **Richardson Maturity Model** required to be RESTful.
+This project is an API built using **Java, Spring Boot, Hibernate, Spring Data JPA, Spring Security, Swagger, HATEOAS, PostgreSQL**, and implements **Bearer Authentication** and **ISO 8601** date formats. The project supports **HTTP PATCH**, includes **pagination**, and follows all four levels of **Richardson Maturity Model** required to be RESTful.
 
 ## Table of Contents
 
