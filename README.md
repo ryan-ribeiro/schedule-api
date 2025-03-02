@@ -46,8 +46,10 @@ spring.datasource.password=yourpassword
 mvn spring-boot:run
 ```
 
-2. The API will be accessible at [localhost:8080](localhost:8080).
-   Swagger is available at [localhost:8080/swagger-ui/index.html#/](localhost:8080/swagger-ui/index.html#/).
+2. The API will be accessible at
+```[localhost:8080](localhost:8080).```
+Swagger is available at
+```[localhost:8080/swagger-ui/index.html#/](localhost:8080/swagger-ui/index.html#/).```
    
 
 ## API Endpoints
