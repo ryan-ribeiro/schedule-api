@@ -56,13 +56,26 @@ Swagger is available at
 
 The API provides the following endpoints:
 
+**Authentication:**
+```markdown
+POST /auth/register - Register a new user (no authentication required)
+
+POST /auth/login - Authenticate an existing user, returns a token (no authentication required)
+
+GET /auth/test - Returns a status 200 ok if the user is authenticated (authentication required)
+
+GET /auth/test/customer - Returns a status 200 ok if the user has the role "ROLE_CUSTOMER" (ROLE_CUSTOMER authentication required)
+
+GET /auth/test/administrator - Returns a status 200 ok if the user has the role "ROLE_ADMINISTRATOR" (ROLE_ADMINISTRATOR authentication required)
+```
+
 **Tasks:**
 ```markdown
 GET /tarefa - Retrieve a list of all tasks in the database (pagination available, ROLE_ADMINISTRATOR authentication required)
 
 GET /tarefa/user/{username} - Retrieve a list of all tasks made by the user "username", but only if you're the "username" user authenticated. (ROLE_CUSTOMER authentication required)
 
-GET /tarefa/{id} - Retrieve a task which id is "{id}" made by the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required).
+GET /tarefa/{id} - Retrieve a task which id is "{id}" made by the user "username", but only if you're the "username" user authenticated (pagination available, ROLE_CUSTOMER authentication required).
 
 POST /tarefa - Create a new task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
@@ -77,7 +90,7 @@ DELETE /tarefa/{id} - Delete an existing task in the name of the user "username"
 ```markdown
 GET /user - Retrieve a list of all users in the database (pagination available, ROLE_ADMINISTRATOR authentication required)
 
-GET /user/{id} - Retrieve a list of all tasks made by the user "username" and his info, but only if you're the "username" user authenticated. (ROLE_CUSTOMER authentication required)
+GET /user/{id} - Retrieve a list of all tasks made by the user "username" and his info, but only if you're the "username" user authenticated. (pagination available, ROLE_CUSTOMER authentication required)
 
 PUT /user/{id} - Update all of an existing user's property in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
@@ -85,19 +98,6 @@ PATCH /user/{id} - Update an existing user's property in the name of the user "u
 
 DELETE /user/{id} - Delete an existing user in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
-```
-
-**Authentication:**
-```markdown
-POST /auth/register - Register a new user (no authentication required)
-
-POST /auth/login - Authenticate an existing user, returns a token (no authentication required)
-
-GET /auth/test - Returns a status 200 ok if the user is authenticated (authentication required)
-
-GET /auth/test/customer - Returns a status 200 ok if the user has the role "ROLE_CUSTOMER" (ROLE_CUSTOMER authentication required)
-
-GET /auth/test/administrator - Returns a status 200 ok if the user has the role "ROLE_ADMINISTRATOR" (ROLE_ADMINISTRATOR authentication required)
 ```
 
 ## Authentication
