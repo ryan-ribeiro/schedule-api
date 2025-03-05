@@ -1,4 +1,4 @@
-# Task Scheduling API
+localhost:8080/swagger-ui/# Task Scheduling API
 
 &#x20;  &#x20;
 
@@ -71,19 +71,19 @@ GET /auth/test/administrator - Returns a status 200 ok if the user has the role 
 
 **Tasks:**
 ```markdown
-GET /tarefa - Retrieve a list of all tasks in the database (pagination available, ROLE_ADMINISTRATOR authentication required)
+GET /task - Retrieve a list of all tasks in the database (pagination available, ROLE_ADMINISTRATOR authentication required)
 
-GET /tarefa/user/{username} - Retrieve a list of all tasks made by the user "username", but only if you're the "username" user authenticated. (ROLE_CUSTOMER authentication required)
+GET /task/user/{username} - Retrieve a list of all tasks made by the user "username", but only if you're the "username" user authenticated. (ROLE_CUSTOMER authentication required)
 
-GET /tarefa/{id} - Retrieve a task which id is "{id}" made by the user "username", but only if you're the "username" user authenticated (pagination available, ROLE_CUSTOMER authentication required).
+GET /task/{id} - Retrieve a task which id is "{id}" made by the user "username", but only if you're the "username" user authenticated (pagination available, ROLE_CUSTOMER authentication required).
 
-POST /tarefa - Create a new task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
+POST /task - Create a new task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
-PUT /tarefa/{id} - Update all of an existing task's property in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
+PUT /task/{id} - Update all of an existing task's property in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
-PATCH /tarefa/{id} - Update an existing task's property in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
+PATCH /task/{id} - Update an existing task's property in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
-DELETE /tarefa/{id} - Delete an existing task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
+DELETE /task/{id} - Delete an existing task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
 ```
 **User:**
