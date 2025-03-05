@@ -1,4 +1,4 @@
-localhost:8080/swagger-ui/# Task Scheduling API
+# Task Scheduling API
 
 &#x20;  &#x20;
 
