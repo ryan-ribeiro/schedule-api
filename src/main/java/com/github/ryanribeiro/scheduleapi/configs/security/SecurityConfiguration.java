@@ -35,6 +35,7 @@ public class SecurityConfiguration {
 	        "/auth/login"
 	};
 	
+<<<<<<< HEAD
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
     		"/user",
@@ -53,11 +54,30 @@ public class SecurityConfiguration {
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
             "/users/test/administrator",
+=======
+    // AUTHENTICATION REQUIRED ENDPOINTS
+    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+    		"/user",
+    		"/user/**",
+    		"/task",
+            "/task/**",
+            "/auth/test"
+    };
+
+    // CUSTOMER ENDPOINTS
+    public static final String [] ENDPOINTS_CUSTOMER = {
+            "/auth/test/customer"
+    };
+
+    // ADMIN ENDPOINTS
+    public static final String [] ENDPOINTS_ADMIN = {
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
             "/auth/test/administrator"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+<<<<<<< HEAD
         return httpSecurity.csrf().disable() // Desativa a proteção contra CSRF
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Configura a política de criação de sessão como stateless
                 .and().authorizeHttpRequests() // Habilita a autorização para as requisições HTTP
@@ -67,6 +87,17 @@ public class SecurityConfiguration {
                 .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
                 .anyRequest().denyAll()
                 // Adiciona o filtro de autenticação de usuário que criamos, antes do filtro de segurança padrão do Spring Security
+=======
+        return httpSecurity.csrf().disable() // Disables CSRF protection
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Configures the session creation policy as stateless.
+                .and().authorizeHttpRequests() // Enables authorization for HTTP requests.
+                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
+                .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR") // Notice that it is not necessary to prefix the name with 'ROLE', as we did when defining the roles.
+                .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER")
+                .anyRequest().denyAll()
+                // Adds the user authentication filter we created before Spring Security's default security filter.
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
                 .and().addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

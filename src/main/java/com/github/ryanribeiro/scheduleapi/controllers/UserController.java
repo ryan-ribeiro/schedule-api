@@ -29,9 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.ryanribeiro.scheduleapi.dtos.UserPatchRecordDto;
 import com.github.ryanribeiro.scheduleapi.dtos.UserRecordDto;
+<<<<<<< HEAD
 import com.github.ryanribeiro.scheduleapi.entities.TarefaModel;
 import com.github.ryanribeiro.scheduleapi.entities.UserModel;
 import com.github.ryanribeiro.scheduleapi.repository.TarefaRepository;
+=======
+import com.github.ryanribeiro.scheduleapi.entities.TaskModel;
+import com.github.ryanribeiro.scheduleapi.entities.UserModel;
+import com.github.ryanribeiro.scheduleapi.repository.TaskRepository;
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 import com.github.ryanribeiro.scheduleapi.repository.UserRepository;
 import com.github.ryanribeiro.scheduleapi.services.NullPropertyNamesServices;
 import com.github.ryanribeiro.scheduleapi.services.UserService;
@@ -44,7 +50,11 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@Autowired
+<<<<<<< HEAD
 	private TarefaRepository tarefaRepository;
+=======
+	private TaskRepository taskRepository;
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 	
 	@Autowired
 	NullPropertyNamesServices nullPropertyNames;
@@ -57,7 +67,11 @@ public class UserController {
 	
 	@GetMapping("/user")
 	@PreAuthorize("hasRole('ADMINISTRATOR')")
+<<<<<<< HEAD
 	public ResponseEntity<Object> getAllUsers(@PageableDefault(page= 0, size= 10, sort= "dataInclusao", 
+=======
+	public ResponseEntity<Object> getAllUsers(@PageableDefault(page= 0, size= 10, sort= "inclusionDate", 
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 			direction= Sort.Direction.ASC) Pageable pageable) {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -65,7 +79,11 @@ public class UserController {
 			if(!usersPage.isEmpty()) {
 				for(UserModel user: usersPage) {
 					UUID id = user.getId();
+<<<<<<< HEAD
 					user.add(linkTo(methodOn(TarefaController.class).getOneTarefa(id, pageable)).withSelfRel());
+=======
+					user.add(linkTo(methodOn(TaskController.class).getOneTask(id, pageable)).withSelfRel());
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 				}
 			}
 			return ResponseEntity.ok(usersPage);
@@ -78,7 +96,11 @@ public class UserController {
 	
 	@GetMapping("/user/{id}")
 	@PreAuthorize("hasRole('CUSTOMER')")
+<<<<<<< HEAD
 	public ResponseEntity<Object> getOneUser(@PathVariable(value="id")UUID id, @PageableDefault(page= 0, size= 10, sort= "dataInclusao",
+=======
+	public ResponseEntity<Object> getOneUser(@PathVariable(value="id")UUID id, @PageableDefault(page= 0, size= 10, sort= "inclusionDate",
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 																			direction= Sort.Direction.ASC) Pageable pageable) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -90,7 +112,11 @@ public class UserController {
 		if(user.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Uesr not found");
 		}
+<<<<<<< HEAD
 		user.get().add(linkTo(methodOn(TarefaController.class).getAllTarefas(pageable)).withSelfRel());
+=======
+		user.get().add(linkTo(methodOn(TaskController.class).getAllTasks(pageable)).withSelfRel());
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 		return ResponseEntity.status(HttpStatus.OK).body(user.get());
 	}
 	
@@ -142,6 +168,7 @@ public class UserController {
 	    if (userRecordDto.tarefas() != null) {
 	        // Atualizando apenas as tarefas passadas sem remover as antigas
 	        userRecordDto.tarefas().forEach(tarefaDto -> {
+<<<<<<< HEAD
 	            Optional<TarefaModel> tarefaOptional = tarefaRepository.findById(tarefaDto.getId());
 	            if (tarefaOptional.isPresent()) {
 	                TarefaModel tarefaModel = tarefaOptional.get();
@@ -152,6 +179,18 @@ public class UserController {
 	                BeanUtils.copyProperties(tarefaDto, novaTarefa);
 	                novaTarefa.setUsuario(userModel);
 	                userModel.getTarefas().add(novaTarefa);
+=======
+	            Optional<TaskModel> tarefaOptional = taskRepository.findById(tarefaDto.getId());
+	            if (tarefaOptional.isPresent()) {
+	                TaskModel taskModel = tarefaOptional.get();
+	                BeanUtils.copyProperties(tarefaDto, taskModel, "id", "usuario");
+	                taskModel.setUser(userModel);
+	            } else {
+	                TaskModel novaTarefa = new TaskModel();
+	                BeanUtils.copyProperties(tarefaDto, novaTarefa);
+	                novaTarefa.setUser(userModel);
+	                userModel.getTasks().add(novaTarefa);
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 	            }
 	        });
 	    }
