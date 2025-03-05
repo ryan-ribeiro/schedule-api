@@ -39,8 +39,8 @@ public class SecurityConfiguration {
     		"/user",
     		"/user/**",
     		"/task",
-            "/task/**",
-            "/auth/test"
+            	"/task/**",
+            	"/auth/test"
     };
 
     public static final String [] ENDPOINTS_CUSTOMER = {
