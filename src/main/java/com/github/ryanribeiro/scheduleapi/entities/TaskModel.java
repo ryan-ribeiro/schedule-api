@@ -1,4 +1,4 @@
-package com.github.ryanribeiro.scheduleapi.entities;
+	package com.github.ryanribeiro.scheduleapi.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -103,6 +103,4 @@ public class TaskModel extends RepresentationModel<TaskModel >implements Seriali
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
-
 }

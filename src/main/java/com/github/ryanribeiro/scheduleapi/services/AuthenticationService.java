@@ -22,17 +22,10 @@ import com.github.ryanribeiro.scheduleapi.entities.UserModel;
 @Service
 public class AuthenticationService {
 
-    private static final String LOGIN_URL = "http://localhost:8080/login"; // Ajuste se necessário
+    private static final String LOGIN_URL = "http://localhost:8080/auth/login";
 
-<<<<<<< HEAD
     public Authentication autenticarUsuario(UserModel usuario) {
-        // Criando a requisição de login
     	LoginUserDto loginRequest = new LoginUserDto(usuario.getEmail(), usuario.getPassword());
-=======
-    public Authentication autenticarUsuario(UserModel user) {
-        // Criando a requisição de login
-    	LoginUserDto loginRequest = new LoginUserDto(user.getEmail(), user.getPassword());
->>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -47,20 +40,11 @@ public class AuthenticationService {
         );
 
         if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
-<<<<<<< HEAD
-            throw new RuntimeException("Falha ao autenticar usuário");
-=======
             throw new RuntimeException("Failed to authenticate user");
->>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
         }
 
-        // Criando objeto de autenticação e armazenando no contexto do Spring Security
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-<<<<<<< HEAD
                 usuario.getUsername(), null, Collections.singletonList(new SimpleGrantedAuthority("USERS"))
-=======
-                user.getUsername(), null, Collections.singletonList(new SimpleGrantedAuthority("USERS"))
->>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
         );
         SecurityContextHolder.getContext().setAuthentication(authToken);
 

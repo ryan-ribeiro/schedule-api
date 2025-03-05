@@ -40,48 +40,22 @@ public class UserService {
     @Autowired
 	private PasswordEncoder passwordEncoder;
 
- // Método responsável por autenticar um usuário e retornar um token JWT
+ // Method responsible for authenticating a user and returning a JWT token
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
-        // Cria um objeto de autenticação com o email e a senha do usuário
+        // Creates an authentication object with the user's email and password
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUserDto.email(), loginUserDto.password());
 
-        // Autentica o usuário com as credenciais fornecidas
+        // Authenticates the user with the provided credentials
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        // Obtém o objeto UserDetails do usuário autenticado
+        // Gets the UserDetails object of the authenticated user
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        // Gera um token JWT para o usuário autenticado
+        // Generates a JWT token for the authenticated user
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
-    
-//    public void createUser(UserRecordDto userRecord) {
-//    	
-//    	Optional<UserModel> userOptional = Optional.ofNullable(userRepository.findByUsername(userRecord.username()));
-//    	
-//    	if(userOptional.isEmpty()) {
-//    		// Converte cada nome de role (String) em um objeto Role
-//    		Set<Role> roles = userRecord.roles().stream()
-//                    .map(roleName -> Role.builder().name(RoleName.valueOf(roleName)).build())  // Converte para RoleName
-//                    .collect(Collectors.toSet());
-//
-//    		
-//	        // Cria um novo usuário com os dados fornecidos
-//	        UserModel newUser = UserModel.builder()
-//	        		.username(userRecord.username())
-//	                // Codifica a senha do usuário com o algoritmo bcrypt
-//	                .password(securityConfiguration.passwordEncoder().encode(userRecord.password()))
-//	                .tarefas(userRecord.tarefas())
-//	                // Atribui ao usuário uma permissão específica
-//	                .roles(roles)
-//	                .dataInclusao(userRecord.dataInclusao())
-//	                .build();
-//	
-//	        // Salva o novo usuário no banco de dados
-//	        userRepository.save(newUser);
-//    	}
-//    }
+
     
     public void createUser(UserModel user) {
     	Optional<UserModel> userOptional = Optional.ofNullable(userRepository.findByUsername(user.getUsername()));

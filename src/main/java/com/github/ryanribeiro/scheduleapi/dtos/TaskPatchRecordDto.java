@@ -14,7 +14,7 @@ public record TaskPatchRecordDto(
 		
 		Status status,
 		
-		UserModel user,
+		UserModel usuario,
 		
 		String uri
 		

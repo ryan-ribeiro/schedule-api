@@ -1,4 +1,4 @@
-package src.main.java.com.github.ryanribeiro.scheduleapi;
+package com.github.ryanribeiro.scheduleapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
