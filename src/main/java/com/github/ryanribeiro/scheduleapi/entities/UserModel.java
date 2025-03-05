@@ -55,6 +55,7 @@ public class UserModel extends RepresentationModel<UserModel>{
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles;
     
+<<<<<<< HEAD
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	private List<TarefaModel> tarefas;
@@ -66,6 +67,19 @@ public class UserModel extends RepresentationModel<UserModel>{
 	@PrePersist
     protected void onCreate() {
 		dataInclusao = new Date();
+=======
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
+	private List<TaskModel> tasks;
+    
+    @Column(name = "created_at", nullable = true, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+    private Date inclusionDate;
+	
+	@PrePersist
+    protected void onCreate() {
+		inclusionDate = new Date();
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
     }
 
 	public void setId(UUID id) {
@@ -88,12 +102,21 @@ public class UserModel extends RepresentationModel<UserModel>{
 		this.roles = roles;
 	}
 
+<<<<<<< HEAD
 	public void setTarefas(List<TarefaModel> tarefas) {
 		this.tarefas = tarefas;
 	}
 
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = dataInclusao;
+=======
+	public void setTarefas(List<TaskModel> tasks) {
+		this.tasks = tasks;
+	}
+
+	public void setInclusionDate(Date inclusionDate) {
+		this.inclusionDate = inclusionDate;
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 	}
 	
 	

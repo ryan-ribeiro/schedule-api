@@ -40,7 +40,11 @@ public class StartApplication implements CommandLineRunner {
 	        }
 
 	        Role roleAdmin = new Role();
+<<<<<<< HEAD
 	        roleAdmin.setName(RoleName.ROLE_ADMINISTRATOR); // Corrigindo a atribuição do nome do papel
+=======
+	        roleAdmin.setName(RoleName.ROLE_ADMINISTRATOR);
+>>>>>>> 8686dbb (Models, methods, beans, and endpoints rennamed to match an English Language project.)
 	        user.getRoles().add(roleAdmin);
 	        
 	        userRepository.save(user);
