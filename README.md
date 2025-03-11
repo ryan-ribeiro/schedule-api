@@ -60,13 +60,13 @@ The API provides the following endpoints:
 ```markdown
 POST /auth/register - Register a new user (no authentication required)
 
-POST /auth/login - Authenticate an existing user, returns a token (no authentication required)
+POST /auth/login - Authenticate an existing user, and returns a token (no authentication required)
 
-GET /auth/test - Returns a status 200 ok if the user is authenticated (authentication required)
+GET /auth/test - Returns status 200 ok if the user is authenticated (authentication required)
 
-GET /auth/test/customer - Returns a status 200 ok if the user has the role "ROLE_CUSTOMER" (ROLE_CUSTOMER authentication required)
+GET /auth/test/customer - Returns status 200 ok if the user has the role "ROLE_CUSTOMER" (ROLE_CUSTOMER authentication required)
 
-GET /auth/test/administrator - Returns a status 200 ok if the user has the role "ROLE_ADMINISTRATOR" (ROLE_ADMINISTRATOR authentication required)
+GET /auth/test/administrator - Returns status 200 ok if the user has the role "ROLE_ADMINISTRATOR" (ROLE_ADMINISTRATOR authentication required)
 ```
 
 **Tasks:**
@@ -75,7 +75,7 @@ GET /task - Retrieve a list of all tasks in the database (pagination available, 
 
 GET /task/user/{username} - Retrieve a list of all tasks made by the user "username", but only if you're the "username" user authenticated. (ROLE_CUSTOMER authentication required)
 
-GET /task/{id} - Retrieve a task which id is "{id}" made by the user "username", but only if you're the "username" user authenticated (pagination available, ROLE_CUSTOMER authentication required).
+GET /task/{id} - Retrieve a task whose id is "{id}" made by the user "username", but only if you're the "username" user authenticated (pagination available, ROLE_CUSTOMER authentication required).
 
 POST /task - Create a new task in the name of the user "username", but only if you're the "username" user authenticated (ROLE_CUSTOMER authentication required)
 
